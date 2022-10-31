@@ -7,7 +7,7 @@ name = "pypi"
 streamlit = "*"
 numpy = "*"
 pandas = "*"
-
+mysql-connector-python = "*"
 [dev-packages]
 
 [requires]
