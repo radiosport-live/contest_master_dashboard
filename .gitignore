@@ -127,3 +127,12 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# security_config
+.streamlit/secrets.toml
+
+# Notes
+notes/*
+
+# Pipfile.lock
+Pipfile.lock
