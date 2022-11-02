@@ -8,18 +8,19 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import json, socket, time, threading
-import mysql.connector
+# import mysql.connector
 st.set_page_config(layout="wide")
-
-def init_connection():
-    return mysql.connector.connect(**st.secrets["mysql"])
     
-def run_query(query):
-    with conn.cursor() as cur:
-        cur.execute(query)
-        return cur.fetchall()
+# def init_connection():
+#     return mysql.connector.connect(**st.secrets["mysql"])
+
+# def run_query(query):
+#     with conn.cursor() as cur:
+#         cur.execute(query)
+#         return cur.fetchall()
 
 # Writing and porting data
+
 
 def combined_dashboard(callsigns,tab):
     st.write("IN-Progress")
