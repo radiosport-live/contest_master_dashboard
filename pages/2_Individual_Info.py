@@ -4,7 +4,7 @@ import geojson, json
 import pandas as pd
 import numpy as np
 import leafmap.foliumap as leafmap
-import mysql.connector
+#import mysql.connector
 st.set_page_config(layout="wide")
 with open("frontend/css/streamlit.css") as f:
     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
