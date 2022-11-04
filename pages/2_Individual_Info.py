@@ -3,7 +3,6 @@ import geopandas as gpd
 import geojson, json
 import pandas as pd
 import numpy as np
-import pydeck as pdk
 import leafmap.foliumap as leafmap
 import mysql.connector
 st.set_page_config(layout="wide")
