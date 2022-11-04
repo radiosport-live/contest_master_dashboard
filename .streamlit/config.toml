@@ -4,3 +4,12 @@ font="serif"
 
 [mapbox]
 token="pk.eyJ1IjoiZW1lcmdlbmN5NDMxMiIsImEiOiJjbDl2dGtpeXkwODZkM3ZuM2x2YW9pdjgyIn0.x0m49Mf8gXyXAkOK0iaq_w"
+
+[ui]
+hideTopBar = true
+
+[server]
+runOnSave = True
+
+[browser]
+gatherUsageStats = False
