@@ -9,7 +9,7 @@ token="pk.eyJ1IjoiZW1lcmdlbmN5NDMxMiIsImEiOiJjbDl2dGtpeXkwODZkM3ZuM2x2YW9pdjgyIn
 hideTopBar = true
 
 [server]
-runOnSave = True
+runOnSave = true
 
 [browser]
-gatherUsageStats = False
+gatherUsageStats = false
