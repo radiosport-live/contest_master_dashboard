@@ -1,7 +1,7 @@
 geojson==2.5.0
 geopandas==0.12.1
 leafmap==0.11.3
-mysql_connector_repackaged==0.3.1
 numpy==1.23.4
 pandas==1.5.1
+SQLAlchemy==1.4.43
 streamlit==1.14.0
