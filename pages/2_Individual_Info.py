@@ -20,6 +20,10 @@ def qso_line_map(_m, con, callsign, group, time):
     return spokemap
 def app():
     st.set_page_config(layout="wide")
+    callsigns = ["K9CT","KD9LSV","AA0Z","N0AX","W0ECC","KD9WHO"]
+    #callsigns = run_query("SELECT DISTINCT callsign FROM home_table ORDER BY callsign ASC;")
+    with st.sidebar:
+        chosen_callsign=st.selectbox('Choose Callsign',callsigns)
     with open("frontend/css/streamlit.css") as f:
         st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
     # Payload SQL Commands
@@ -30,11 +34,8 @@ def app():
     command_radio2=" r.OpCall, r.IsRunning, r.Freq, r.Status, r.Macro, r.Radio_2_TX, r.Radio_2_Focus, r.Radio_2_Rate from radio AS r WHERE r.Contest_Call="+chosen_callsign+"ORDER BY r.timestamp DESC Limit 1;"
     command_score="SELECT  s.Total_Score, s.Total_QSOs, s.Total_Points, s.Total_Mults, s.Current_Total_Rate FROM score AS s WHERE s.Contest_Call="+callsign+"ORDER BY s.timestamp DESC LIMIT 1;"
     command_q="SELECT q__QSO,Last_QSO_Band, q.Last_QSO_Mode, q., q.Last_QSO_Distance, q.Last_QSO_OP FROM qsos as q where q.Contest_Call="+callsign+"ORDER BY q.timestamp DESC LIMIT 1;"
-    callsigns = ["K9CT","KD9LSV","AA0Z","N0AX","W0ECC","KD9WHO"]
-    #callsigns = run_query("SELECT DISTINCT callsign FROM home_table ORDER BY callsign ASC;")
     # Sidebar Configuration
-    with st.sidebar:
-        chosen_callsign=st.selectbox('Choose Callsign',callsigns)
+  
     # Payload Defaults
     payload_test= {"Last_Run_QSO_Time":"00:20:00","Last_Run_QSO":"KD9LSV","Last_SP_QSO_Time":"00:05:02","Last_SP_QSO":"WT2P","Top_OP_Mults":"K9CT","Radio_1_Operator":"AA0Z","Radio_1_Mode":"Run","Radio_1_Freq":"21245.4","Radio_1_Status":"","Radio_1_Macro":"","Radio_1_TX":"","Radio_1_Focus":"","Radio_1_Rate":250,"Radio_2_Operator":"AB9YC","Radio_2_Mode":"S&P","Radio_2_Freq":"21295.7","Radio_2_Status":"","Radio_2_Macro":"","Radio_2_TX":"","Radio_2_Focus":"","Radio_2_Rate":60,"Total_Score":2534136,"Total_QSOs":2245,"Total_Points":1914,"Total_Mults":1324,"Current_Total_Rate":125,"Top_OP_Score":"AB9YC","Last_QSO":"K1AR","Last_QSO_Band":"20M","Last_QSO_Mode":"PH","Last_QSO_Exchange":"5","Last_QSO_Distance":"1503 Mi","Last_QSO_OP":"AB9YC"}
     payload=payload_test
