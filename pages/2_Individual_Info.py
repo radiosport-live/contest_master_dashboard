@@ -60,7 +60,14 @@ def app():
         qso_line_layer = qso_line_map(base_map,dash.connect(),chosen_callsign,"Y",59408) 
         #st.write(qso_line_layer)
         base_map.add_gdf(base_layer, layer_name="ARRL Sections")
-        base_map.add_gdf(qso_line_layer, layer_name="QSOs")
+        try:
+            base_map.add_gdf(qso_line_layer, layer_name="QSOs")
+        except IndexError:
+            with st.sidebar:
+               st.write("No Valid Layer")
+        except:
+            with st.sidebar:
+                st.write("Error on QSO Layer")
         base_map.set_center(-97,38,3.5)
         base_map.to_streamlit(width=900, height=550)
         backup_map = leafmap.Map(draw_export=True)
