@@ -1,0 +1,47 @@
+import streamlit as st 
+import geopandas as gpd
+import geojson, json
+import pandas as pd
+import numpy as np
+import leafmap.foliumap as leafmap
+import sqlalchemy
+def connect():
+    engine = sqlalchemy.create_engine('mysql+mysqldb://user:password@host/database')
+    return engine
+
+def run_query(engine,query):
+    with engine.connect() as connection:
+        result= pd.read_sql(query,connection)    
+    return result      
+
+@st.experimental_memo()
+def geo_map(_m):
+    width = 1250
+    height=550
+    file_path = r"ARRL_Sections.geojson"
+    layer_name = "ARRL_Sections"
+    gdf = gpd.read_file(file_path)
+    lon, lat = leafmap.gdf_centroid(gdf)
+    return gdf
+
+# https://github.com/jaycroft/pandas-geojson
+def to_geojson(_m,df,lat1,lon1,lat2,lon2,properties,geo_type):
+    geojson = {'type': 'FeatureCollection', 'features': []}
+    for _, row in df.iterrows():
+        if geo_type.upper() == 'LINESTRING':
+            feature = {'type': 'Feature', 'properties': {}, 'geometry': {'type': 'LineString','coordinates': []}}
+            feature['geometry']['coordinates'] = [[row[lon1], row[lat1]],[row[lon2], row[lat2]]]
+        elif geo_type.upper()== 'POINT':
+            feature = {'type': 'Feature', 'properties': {},'geometry': {'type': 'Point', 'coordinates': []}}
+            feature['geometry']['coordinates'] = [row[lon1], row[lat1]]
+        for prop in properties:
+                feature['properties'][prop] = row[prop]
+
+        geojson['features'].append(feature)
+
+    json_output= json.dumps(geojson)
+    with open('json_output_map.geojson','w') as output:
+        output.write(json_output)
+    file_path = r'json_output_map.geojson'
+    gdf = gpd.read_file(file_path)
+    return gdf

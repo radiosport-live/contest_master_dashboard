@@ -136,3 +136,5 @@ notes/*
 
 # Pipfile.lock
 Pipfile.lock
+
+dashboard_default.py
