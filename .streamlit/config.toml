@@ -13,3 +13,5 @@ runOnSave = true
 
 [browser]
 gatherUsageStats = false
+
+disableCORS= false
