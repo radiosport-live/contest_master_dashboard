@@ -4,7 +4,7 @@ import geojson, json
 import pandas as pd
 import numpy as np
 import dashboard_defaults as dash
-
+import leafmap.foliumap as leafmap
 def qso_line_map(_m, con, callsign, group, time):
     base_command = "SELECT q.myContest_Call as 'Own Call', h.lat AS 'latfrom', h.lon as 'lonfrom',q.Contest_Call as 'Contact Call',CONVERT(q.lat,FLOAT) as 'latto', CONVERT(q.lon,FLOAT) as 'lonto',TIMESTAMPDIFF(MINUTE,NOW(),`timestamp`) as 'Time Elapsed', `timestamp` FROM qsos as q INNER JOIN home as h ON h.Contest_Call=q.myContest_Call WHERE ABS(TIMESTAMPDIFF(MINUTE,NOW(),`timestamp`)) <="+str(time)
     # allow all QSOS or only one callsign
@@ -29,11 +29,11 @@ def app():
     # Payload SQL Commands
     st.write(dash.run_query(dash.connect(),"SELECT * from qsos limit 1;"))
     command_run= "SELECT * from last_qsos where `Contest Call` ="+chosen_callsign+";"
-    command_calc="Select JSON_ONJECT(c.Top_OP_Mults, c.Top_OP_Score FROM calculated AS c WHERE c.Contest_Call="+callsign+"ORDER BY c.timestamp DESC LIMIT 1;"
+    command_calc="Select JSON_ONJECT(c.Top_OP_Mults, c.Top_OP_Score FROM calculated AS c WHERE c.Contest_Call="+chosen_callsign+"ORDER BY c.timestamp DESC LIMIT 1;"
     command_radio1="SELECT r.Radio_1_Operator, r.Radio_1_Mode, r.Radio_1_Freq, r.Radio_1_Status, r.Radio_1_Macro, r.Radio_1_TX, r.Radio_1_Focus, r.Radio_1_Rate FROM radio AS r WHERE r.Contest_Call="+chosen_callsign+"ORDER BY r.timestamp DESC LIMIT 1;" 
     command_radio2=" r.OpCall, r.IsRunning, r.Freq, r.Status, r.Macro, r.Radio_2_TX, r.Radio_2_Focus, r.Radio_2_Rate from radio AS r WHERE r.Contest_Call="+chosen_callsign+"ORDER BY r.timestamp DESC Limit 1;"
-    command_score="SELECT  s.Total_Score, s.Total_QSOs, s.Total_Points, s.Total_Mults, s.Current_Total_Rate FROM score AS s WHERE s.Contest_Call="+callsign+"ORDER BY s.timestamp DESC LIMIT 1;"
-    command_q="SELECT q__QSO,Last_QSO_Band, q.Last_QSO_Mode, q., q.Last_QSO_Distance, q.Last_QSO_OP FROM qsos as q where q.Contest_Call="+callsign+"ORDER BY q.timestamp DESC LIMIT 1;"
+    command_score="SELECT  s.Total_Score, s.Total_QSOs, s.Total_Points, s.Total_Mults, s.Current_Total_Rate FROM score AS s WHERE s.Contest_Call="+chosen_callsign+"ORDER BY s.timestamp DESC LIMIT 1;"
+    command_q="SELECT q__QSO,Last_QSO_Band, q.Last_QSO_Mode, q., q.Last_QSO_Distance, q.Last_QSO_OP FROM qsos as q where q.Contest_Call="+chosen_callsign+"ORDER BY q.timestamp DESC LIMIT 1;"
     # Sidebar Configuration
   
     # Payload Defaults
@@ -56,8 +56,8 @@ def app():
     with col_CurrentQSO:
         st.markdown("<h2><center> QSO Map </center></h2>",unsafe_allow_html=True) 
         base_map = leafmap.Map(draw_export=True)
-        base_layer = geo_map(base_map)
-        qso_line_layer = qso_line_map(base_map,connect(),chosen_callsign,"Y",59408) 
+        base_layer = dash.geo_map(base_map)
+        qso_line_layer = qso_line_map(base_map,dash.connect(),chosen_callsign,"Y",59408) 
         #st.write(qso_line_layer)
         base_map.add_gdf(base_layer, layer_name="ARRL Sections")
         base_map.add_gdf(qso_line_layer, layer_name="QSOs")
