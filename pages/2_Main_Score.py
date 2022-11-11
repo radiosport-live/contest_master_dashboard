@@ -4,7 +4,7 @@ import numpy as np
 import json
 import geopandas as gpd
 import sqlalchemy
-import dashboard_defaults as dash
+import dashboard_default as dash
 import leafmap.foliumap as leafmap
 # import mysql.connector
 st.set_page_config(layout="wide")
