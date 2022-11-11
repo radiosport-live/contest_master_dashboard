@@ -21,7 +21,7 @@ def qso_line_map(_m, con, callsign, group, time):
 def app():
     st.set_page_config(layout="wide")
     #callsigns = ["K9CT","KD9LSV","AA0Z","N0AX","W0ECC","KD9WHO"]
-    callsigns = dash.run_query(dash.connect(),"SELECT DISTINCT callsign FROM home_table ORDER BY callsign ASC;")
+    callsigns = dash.run_query(dash.connect(),"SELECT DISTINCT Contest_Call FROM home ORDER BY Contest_Call ASC;")
     with st.sidebar:
         chosen_callsign=st.selectbox('Choose Callsign',callsigns)
     with open("frontend/css/streamlit.css") as f:
@@ -30,10 +30,10 @@ def app():
     st.write(dash.run_query(dash.connect(),"SELECT * from qsos limit 1;"))
     command_run= "SELECT * from last_qsos where `Contest Call` ="+chosen_callsign+";"
     command_calc="Select JSON_ONJECT(c.Top_OP_Mults, c.Top_OP_Score FROM calculated AS c WHERE c.Contest_Call="+chosen_callsign+"ORDER BY c.timestamp DESC LIMIT 1;"
-    command_radio1="SELECT r.Radio_1_Operator, r.Radio_1_Mode, r.Radio_1_Freq, r.Radio_1_Status, r.Radio_1_Macro, r.Radio_1_TX, r.Radio_1_Focus, r.Radio_1_Rate FROM radio AS r WHERE r.Contest_Call="+chosen_callsign+"ORDER BY r.timestamp DESC LIMIT 1;" 
-    command_radio2=" r.OpCall, r.IsRunning, r.Freq, r.Status, r.Macro, r.Radio_2_TX, r.Radio_2_Focus, r.Radio_2_Rate from radio AS r WHERE r.Contest_Call="+chosen_callsign+"ORDER BY r.timestamp DESC Limit 1;"
+    command_radio1="SELECT r.OpCall, r.IsRunning, r.Freq, r.Status, r.Macro, r.IsTransmitting, r.FocusRadioNr, r.Radio_2_Rate from radio AS r WHERE r.Contest_Call="+chosen_callsign+" and r.radio_station=1 ORDER BY r.timestamp DESC Limit 1;" 
+    command_radio2="SELECT r.OpCall, r.IsRunning, r.Freq, r.Status, r.Macro, r.IsTransmitting, r.FocusRadioNr, r.Radio_2_Rate from radio AS r WHERE r.Contest_Call="+chosen_callsign+" and r.radio_station=2 ORDER BY r.timestamp DESC Limit 1;"
     command_score="SELECT  s.Total_Score, s.Total_QSOs, s.Total_Points, s.Total_Mults, s.Current_Total_Rate FROM score AS s WHERE s.Contest_Call="+chosen_callsign+"ORDER BY s.timestamp DESC LIMIT 1;"
-    command_q="SELECT q__QSO,Last_QSO_Band, q.Last_QSO_Mode, q., q.Last_QSO_Distance, q.Last_QSO_OP FROM qsos as q where q.Contest_Call="+chosen_callsign+"ORDER BY q.timestamp DESC LIMIT 1;"
+    command_q="SELECT q.Last_Run_QSO_Time,q.Last_Run_QSO, q.Last_QSO_Band, q.Last_QSO_Mode, q., q.Last_QSO_Distance, q.Last_QSO_OP FROM last_qsos as q where q.`Contest Call`="+chosen_callsign+"ORDER BY q.timestamp DESC LIMIT 1;"
     # Sidebar Configuration
   
     # Payload Defaults
