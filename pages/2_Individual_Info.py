@@ -3,7 +3,7 @@ import geopandas as gpd
 import geojson, json
 import pandas as pd
 import numpy as np
-import dashboard_defaults as dash
+import dashboard_default as dash
 import leafmap.foliumap as leafmap
 def qso_line_map(_m, con, callsign, group, time):
     base_command = "SELECT q.myContest_Call as 'Own Call', h.lat AS 'latfrom', h.lon as 'lonfrom',q.Contest_Call as 'Contact Call',CONVERT(q.lat,FLOAT) as 'latto', CONVERT(q.lon,FLOAT) as 'lonto',TIMESTAMPDIFF(MINUTE,NOW(),`timestamp`) as 'Time Elapsed', `timestamp` FROM qsos as q INNER JOIN home as h ON h.Contest_Call=q.myContest_Call WHERE ABS(TIMESTAMPDIFF(MINUTE,NOW(),`timestamp`)) <="+str(time)
@@ -20,8 +20,8 @@ def qso_line_map(_m, con, callsign, group, time):
     return spokemap
 def app():
     st.set_page_config(layout="wide")
-    callsigns = ["K9CT","KD9LSV","AA0Z","N0AX","W0ECC","KD9WHO"]
-    #callsigns = run_query("SELECT DISTINCT callsign FROM home_table ORDER BY callsign ASC;")
+    #callsigns = ["K9CT","KD9LSV","AA0Z","N0AX","W0ECC","KD9WHO"]
+    callsigns = dash.run_query(dash.connect(),"SELECT DISTINCT callsign FROM home_table ORDER BY callsign ASC;")
     with st.sidebar:
         chosen_callsign=st.selectbox('Choose Callsign',callsigns)
     with open("frontend/css/streamlit.css") as f:

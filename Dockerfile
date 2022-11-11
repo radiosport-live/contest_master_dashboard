@@ -10,9 +10,12 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     software-properties-common \
     git \
+    libmariadb-dev\
     && rm -rf /var/lib/apt/lists/*
 
 RUN git clone https://github.com/kd9lsv/contester_master_dashboard.git .
+
+RUN pip install --upgrade pip
 
 RUN pip3 install -r requirements.txt
 
