@@ -6,12 +6,12 @@ import numpy as np
 import dashboard_default as dash
 import leafmap.foliumap as leafmap
 def qso_line_map(_m, con, callsign, group, time):
-    base_command = "SELECT q.myContest_Call as 'Own Call', h.lat AS 'latfrom', h.lon as 'lonfrom',q.Contest_Call as 'Contact Call',CONVERT(q.lat,FLOAT) as 'latto', CONVERT(q.lon,FLOAT) as 'lonto',TIMESTAMPDIFF(MINUTE,NOW(),`timestamp`) as 'Time Elapsed', `timestamp` FROM qsos as q INNER JOIN home as h ON h.Contest_Call=q.myContest_Call WHERE ABS(TIMESTAMPDIFF(MINUTE,NOW(),`timestamp`)) <="+str(time)
+    base_command = "SELECT q.mycall as 'Own Call', h.lat AS 'latfrom', h.lon as 'lonfrom',q.external_Call as 'Contact Call',CONVERT(q.lat,FLOAT) as 'latto', CONVERT(q.lon,FLOAT) as 'lonto',TIMESTAMPDIFF(MINUTE,NOW(),`timestamp`) as 'Time Elapsed', `timestamp` FROM qsos as q INNER JOIN home as h ON h.Contest_Call=q.mycall WHERE ABS(TIMESTAMPDIFF(MINUTE,NOW(),`timestamp`)) <="+str(time)
     # allow all QSOS or only one callsign
     if (group.upper == 'Y'):
         base_command += " ORDER BY `timestamp` DESC;"
     else:
-        base_command += " and q.myContest_Call=\""+callsign+"\" ORDER BY `timestamp` DESC;"
+        base_command += " and q.mycall=\""+callsign+"\" ORDER BY `timestamp` DESC;"
     map=dash.run_query(dash.connect(),base_command)
     map['timestamp']=map['timestamp'].astype(str)
     spokemap= dash.to_geojson(_m,df=map,lat1='latfrom',lon1='lonfrom',lat2='latto',lon2='lonto',properties=[
