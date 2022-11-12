@@ -136,7 +136,10 @@ def app():
             with col_4:
                 st.metric("Status",payload["radio1"]["IsTransmitting"][0])
             with col_5:
-                st.metric("Macro",payload["radio1"]["FunctionKeyCaption"][0])
+                if (payload["radio1"]["FunctionKeyCaption"][0]==''):
+                    st.metric("Macro","Hello")
+                else:
+                    st.metric("Macro",payload["radio1"]["FunctionKeyCaption"][0])
             with col_6:
                 st.metric("Radio 1 Rate",payload["radio1"]["FocusRadioNr"][0])
             with col_7:
