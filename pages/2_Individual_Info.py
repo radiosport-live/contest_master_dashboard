@@ -23,6 +23,9 @@ def qso_line_map(_m, con, callsign, group, time):
     return spokemap
 @st.experimental_memo(ttl=15)
 def app(chosen_callsign,time_value):
+    placeholder=st.empty()
+    placeholder2=st.empty()
+    placeholder3=st.empty()
     with open("frontend/css/streamlit.css") as f:
         st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
     # Payload SQL Commands
@@ -53,9 +56,6 @@ def app(chosen_callsign,time_value):
         payload["radio2"]=value_radio2
         # payload["last_time"]=
         ### End_Defaults
-        placeholder=st.empty()
-        placeholder2=st.empty()
-        placeholder3=st.empty()
         with placeholder.container():
             #payload=select_individual_data(chosen_callsign)
             col_LastQSO, col_CurrentQSO, col_Score = st.columns([.9,5,1])
